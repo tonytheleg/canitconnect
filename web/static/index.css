@@ -1,0 +1,15 @@
+.button {
+    width: 100%;
+    padding: 1em;
+    color: #fff;
+    background: black;
+    border: none;
+}
+
+#curlOutput, #tracerouteOutput, #netcatOutput, #pingOutput {
+    width: 100%;
+    height: 100%;
+    background-color: #dcdcdc;
+    padding: 2.5px 10px;
+    color: black;
+}
