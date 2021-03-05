@@ -1,12 +1,16 @@
 package main
 
 import (
-	"canitconnect/web/app"
+	"canitconnect/web"
 	"net/http"
 )
 
 func main() {
-	http.Handle("/", app.Index())
+	http.Handle("/", web.Index())
+	http.Handle("/api/v1/curl", web.CallCurl())
+	http.Handle("/api/v1/traceroute", web.CallTraceroute())
+	http.Handle("/api/v1/netcat", web.CallNetcat())
+	http.Handle("/api/v1/ping", web.CallPing())
 	// to serve css, these files are served using fileserver, with path stripped out
 	// fs := http.FileServer(http.Dir("static/"))
 	// http.Handle("/static/", http.StripPrefix("/static/", fs))
