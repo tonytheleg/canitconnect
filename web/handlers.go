@@ -15,7 +15,7 @@ func Index() http.Handler {
 
 // CallCurl handles the route for curling and endpoint
 func CallCurl() http.Handler {
-	return http.HandlerFunc(v1.ShowCurlData)
+	return http.HandlerFunc(v1.Curl)
 }
 
 // CallTraceroute handles the route for performing a traceroute to an endpoint
