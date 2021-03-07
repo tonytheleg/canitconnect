@@ -20,21 +20,15 @@ func CallCurl() http.Handler {
 
 // CallTraceroute handles the route for performing a traceroute to an endpoint
 func CallTraceroute() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Traceroute Called!\n")
-	})
+	return http.HandlerFunc(v1.Traceroute)
 }
 
 // CallNetcat handles the route for performing a netcat to test a port
 func CallNetcat() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Netcat Called!\n")
-	})
+	return http.HandlerFunc(v1.Netcat)
 }
 
 // CallPing handles the route to performing a ping test to an endpoint
 func CallPing() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Ping Called!\n")
-	})
+	return http.HandlerFunc(v1.Ping)
 }
