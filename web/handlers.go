@@ -27,8 +27,3 @@ func CallTraceroute() http.Handler {
 func CallNetcat() http.Handler {
 	return http.HandlerFunc(v1.Netcat)
 }
-
-// CallPing handles the route to performing a ping test to an endpoint
-func CallPing() http.Handler {
-	return http.HandlerFunc(v1.Ping)
-}
