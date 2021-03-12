@@ -73,7 +73,3 @@ func printHop(b *bytes.Buffer, hop traceroute.TracerouteHop) {
 		b.WriteString(hopString)
 	}
 }
-
-func address(address [4]byte) string {
-	return fmt.Sprintf("%v.%v.%v.%v", address[0], address[1], address[2], address[3])
-}
