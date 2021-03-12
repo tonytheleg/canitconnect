@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -32,7 +33,10 @@ func Traceroute(w http.ResponseWriter, r *http.Request) {
 	options.SetMaxHops(64)
 	options.SetFirstHop(1)
 
-	fmt.Fprintf(w, "traceroute to %v %v hops max, %v byte packets\n", data.Host, options.MaxHops(), options.PacketSize())
+	var b bytes.Buffer
+
+	header := fmt.Sprintf("traceroute to %v %v hops max, %v byte packets\n", data.Host, options.MaxHops(), options.PacketSize())
+	b.WriteString(header)
 	c := make(chan traceroute.TracerouteHop, 0)
 	go func() {
 		for {
@@ -41,7 +45,7 @@ func Traceroute(w http.ResponseWriter, r *http.Request) {
 				fmt.Println()
 				return
 			}
-			printHop(hop)
+			printHop(&b, hop)
 		}
 	}()
 
@@ -49,19 +53,24 @@ func Traceroute(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Error: ", err)
 	}
+	fmt.Fprintln(w, b.String())
 
 }
 
-func printHop(hop traceroute.TracerouteHop) {
+func printHop(b *bytes.Buffer, hop traceroute.TracerouteHop) {
 	addr := fmt.Sprintf("%v.%v.%v.%v", hop.Address[0], hop.Address[1], hop.Address[2], hop.Address[3])
 	hostOrAddr := addr
 	if hop.Host != "" {
 		hostOrAddr = hop.Host
 	}
 	if hop.Success {
-		fmt.Printf("%-3d %v (%v)  %v\n", hop.TTL, hostOrAddr, addr, hop.ElapsedTime)
+		hopString := fmt.Sprintf("%-3d %v (%v)  %v\n", hop.TTL, hostOrAddr, addr, hop.ElapsedTime)
+		//fmt.Printf("%-3d %v (%v)  %v\n", hop.TTL, hostOrAddr, addr, hop.ElapsedTime)
+		b.WriteString(hopString)
 	} else {
-		fmt.Printf("%-3d *\n", hop.TTL)
+		hopString := fmt.Sprintf("%-3d *\n", hop.TTL)
+		//fmt.Printf("%-3d *\n", hop.TTL)
+		b.WriteString(hopString)
 	}
 }
 
