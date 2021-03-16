@@ -30,14 +30,3 @@ function netcatCompile() {
     var netcatOutput = document.getElementById("netcatOutput").innerHTML = "<p>" +
     "Hostname: " + hostname + "<br>" + "</p>";
 }
-
-function pingCompile() {
-    var hostname = document.getElementById("hostname").value;
-    var inputs = document.querySelectorAll('[data-input]');
-    for (input in inputs) {
-        console.log(input.values);
-    }
-
-    var pingOutput = document.getElementById("pingOutput").innerHTML = "<p>" +
-    "Hostname: " + hostname + "<br>" + "</p>";
-}
