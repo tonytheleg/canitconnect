@@ -34,9 +34,9 @@ func Traceroute(w http.ResponseWriter, r *http.Request) {
 	options.SetFirstHop(1)
 
 	var b bytes.Buffer
-
 	header := fmt.Sprintf("traceroute to %v %v hops max, %v byte packets\n", data.Host, options.MaxHops(), options.PacketSize())
 	b.WriteString(header)
+
 	c := make(chan traceroute.TracerouteHop, 0)
 	go func() {
 		for {
@@ -58,18 +58,13 @@ func Traceroute(w http.ResponseWriter, r *http.Request) {
 }
 
 func printHop(b *bytes.Buffer, hop traceroute.TracerouteHop) {
-	addr := fmt.Sprintf("%v.%v.%v.%v", hop.Address[0], hop.Address[1], hop.Address[2], hop.Address[3])
-	hostOrAddr := addr
-	if hop.Host != "" {
-		hostOrAddr = hop.Host
-	}
+	addr := hop.AddressString()
+	hostOrAddr := hop.HostOrAddressString()
 	if hop.Success {
 		hopString := fmt.Sprintf("%-3d %v (%v)  %v\n", hop.TTL, hostOrAddr, addr, hop.ElapsedTime)
-		//fmt.Printf("%-3d %v (%v)  %v\n", hop.TTL, hostOrAddr, addr, hop.ElapsedTime)
 		b.WriteString(hopString)
 	} else {
 		hopString := fmt.Sprintf("%-3d *\n", hop.TTL)
-		//fmt.Printf("%-3d *\n", hop.TTL)
 		b.WriteString(hopString)
 	}
 }
