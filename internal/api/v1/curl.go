@@ -35,12 +35,10 @@ func Curl(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Something failed", err)
 	}
 	defer resp.Body.Close()
-	fmt.Fprintf(w, "%v %v\ncontent-length: %v\nserver: %v\ncontent-type: %v\ndata: %v\n",
+	fmt.Fprintf(w, "%v %v\ncontent-length: %v\ncontent-type: %v\n",
 		resp.Proto,
 		resp.Status,
 		resp.ContentLength,
-		resp.Header["Server"][0],
 		resp.Header["Content-Type"][0],
-		resp.Header["Date"][0],
 	)
 }
