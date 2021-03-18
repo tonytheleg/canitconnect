@@ -2,13 +2,12 @@
 <head>
   <title>CanItConnect?</title>
   <meta charset="utf-8"/>
-  <script src="script.js"></script>
 </head>
 <body>
   <h3>Curl</h3>
-  <form action="">
+  <form id="curl" action="submit_form" method="post">
       <input type="text" id="hostname" placeholder="Enter Hostname">
-      <button class="button" type="button" onclick="curlCompile()">
+      <button name="curlSubmit" type="submit" >
         Submit
       </button>
   </form>
@@ -18,9 +17,9 @@
   </section>
   
   <h3>Traceroute</h3>
-  <form action="">
+  <form id="traceroute" action="submit_form" method="post">>
       <input type="text" id="hostname" placeholder="Enter Hostname">
-      <button class="button" type="button" onclick="tracerouteCompile()">
+      <button name="tracerouteSubmit" type="submit" >
         Submit
       </button>
   </form>
@@ -30,9 +29,9 @@
   </section>
   
   <h3>Netcat</h3>
-  <form action="">
+  <form id="netcat" action="submit_form" method="post">>
       <input type="text" id="hostname" placeholder="Enter Hostname">
-      <button class="button" type="button" onclick="netcatCompile()">
+      <button name="netcatSubmit" type="submit" >
         Submit
       </button>
   </form>
