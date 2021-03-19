@@ -36,18 +36,18 @@ func Curl(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
-	body, _ := ioutil.ReadAll(r.Body)
-	if body != nil {
-		fmt.Println("Body is", string(body))
+
+	if r.URL.String() == "/api/v1/curl" {
+		body, _ := ioutil.ReadAll(r.Body)
 		data := CurlInput{}
 		err := json.Unmarshal(body, &data)
 		if err != nil {
-			log.Println("Failed to unmarshal json into params")
+			fmt.Fprintln(w, "Failed to unmarshal json into params")
 		}
-		fmt.Println("URL is", data.URL)
 		CurlAPI(w, r, data.URL)
+	} else {
+		CurlForm(w, r, r.FormValue("url"))
 	}
-	CurlForm(w, r, r.FormValue("url"))
 }
 
 // Curl takes the passed URL to test and mimics curls response in calling endpoint
