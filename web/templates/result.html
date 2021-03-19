@@ -14,12 +14,14 @@
   
   <section id="curlOutput">
 
-    <p>Exectured curl to {{.URL}}</p>
+    <p><strong>Executed curl to {{.URL}}</strong></p>
     <p>{{.Protocol}}</p>
     <p>{{.Status}}</p>
     <p>{{.ContentLength}}</p>
-    <p>{{.ContentType}}</p>
-
+    {{range $key, $val := .Headers}}
+    <p><strong>{{$key}}:</strong> {{$val}}</p>
+    {{end}}
+    <br/>
   </section>
   
   <h3>Traceroute</h3>

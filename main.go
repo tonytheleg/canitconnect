@@ -24,7 +24,7 @@ func main() {
 	http.Handle("/api/v1/curl", web.CallCurl())
 	http.Handle("/api/v1/traceroute", web.CallTraceroute())
 	http.Handle("/api/v1/netcat", web.CallNetcat())
-	http.Handle("/curl", web.CallCurlForm())
+	http.Handle("/curl", web.CallCurl())
 	http.Handle("/traceroute", web.CallTraceroute())
 	http.Handle("/netcat", web.CallNetcat())
 

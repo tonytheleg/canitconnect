@@ -11,9 +11,9 @@ func CallCurl() http.Handler {
 }
 
 // CallCurlForm handles the route for curling and endpoint
-func CallCurlForm() http.Handler {
-	return http.HandlerFunc(v1.CurlForm)
-}
+//func CallCurlForm() http.Handler {
+//	return http.HandlerFunc(v1.CurlForm)
+//}
 
 // CallTraceroute handles the route for performing a traceroute to an endpoint
 func CallTraceroute() http.Handler {
