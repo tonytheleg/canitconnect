@@ -5,20 +5,26 @@
 </head>
 <body>
   <h3>Curl</h3>
-  <form id="curl" action="submit_form" method="post">
-      <input type="text" id="hostname" placeholder="Enter Hostname">
+  <form id="curl" action="curl" method="post">
+      <input type="text" name="url" placeholder="Enter URL">
       <button name="curlSubmit" type="submit" >
         Submit
       </button>
   </form>
   
   <section id="curlOutput">
-  
+
+    <p>Exectured curl to {{.URL}}</p>
+    <p>{{.Protocol}}</p>
+    <p>{{.Status}}</p>
+    <p>{{.ContentLength}}</p>
+    <p>{{.ContentType}}</p>
+
   </section>
   
   <h3>Traceroute</h3>
-  <form id="traceroute" action="submit_form" method="post">>
-      <input type="text" id="hostname" placeholder="Enter Hostname">
+  <form id="traceroute" action="submit_form" method="post">
+      <input type="text" name="hostname" placeholder="Enter Hostname">
       <button name="tracerouteSubmit" type="submit" >
         Submit
       </button>
@@ -29,8 +35,8 @@
   </section>
   
   <h3>Netcat</h3>
-  <form id="netcat" action="submit_form" method="post">>
-      <input type="text" id="hostname" placeholder="Enter Hostname">
+  <form id="netcat" action="submit_form" method="post">
+      <input type="text" name="hostname" placeholder="Enter Hostname">
       <button name="netcatSubmit" type="submit" >
         Submit
       </button>
