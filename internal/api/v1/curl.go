@@ -9,10 +9,10 @@ import (
 	"text/template"
 )
 
-var tpl *template.Template
+var curltpl *template.Template
 
 func init() {
-	tpl = template.Must(template.ParseGlob("web/templates/*.html"))
+	curltpl = template.Must(template.ParseGlob("web/templates/*.html"))
 }
 
 // CurlData stores request data needed to perform a curl
@@ -31,7 +31,7 @@ type CurlOutput struct {
 	Headers       http.Header
 }
 
-// Curl takes the passed URL to test and mimics curls response in calling endpoint
+// Curl confirms the request source and directs to the correct curl method
 func Curl(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -50,7 +50,7 @@ func Curl(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Curl takes the passed URL to test and mimics curls response in calling endpoint
+// CurlAPI takes the direct passed data to test and mimics curls' response in calling the endpoint
 func CurlAPI(w http.ResponseWriter, r *http.Request, url string) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func CurlAPI(w http.ResponseWriter, r *http.Request, url string) {
 	}
 }
 
-// Curl takes the passed URL to test and mimics curls response in calling endpoint
+// CurlForm parses the app form to test and mimics curls' response in calling the endpoint
 func CurlForm(w http.ResponseWriter, r *http.Request, url string) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -85,14 +85,15 @@ func CurlForm(w http.ResponseWriter, r *http.Request, url string) {
 		fmt.Fprintln(w, "Something failed", err)
 	}
 	defer resp.Body.Close()
-	data := CurlOutput{
+	data := &CurlOutput{
 		URL:           url,
 		Protocol:      resp.Proto,
 		Status:        resp.Status,
 		ContentLength: fmt.Sprint(resp.ContentLength),
 		Headers:       resp.Header,
 	}
-	err = tpl.ExecuteTemplate(w, "result.html", data)
+	result := Results{CurlResp: data}
+	err = curltpl.ExecuteTemplate(w, "result.html", result)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)

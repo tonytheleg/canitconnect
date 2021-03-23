@@ -11,18 +11,21 @@
         Submit
       </button>
   </form>
-  
-  <section id="curlOutput">
 
-    <p><strong>Executed curl to {{.URL}}</strong></p>
-    <p>{{.Protocol}}</p>
-    <p>{{.Status}}</p>
-    <p>{{.ContentLength}}</p>
-    {{range $key, $val := .Headers}}
-    <p><strong>{{$key}}:</strong> {{$val}}</p>
-    {{end}}
-    <br/>
+  {{- with .CurlResp -}}
+  <section id="curlOutput">
+      <p><strong>Executed curl to {{.URL}}</strong></p>
+      <p>{{.Protocol}}</p>
+      <p>{{.Status}}</p>
+      <p>{{.ContentLength}}</p>
+      {{ range $key, $val := .Headers -}}
+      <p><strong>{{$key}}:</strong> {{$val}}</p>
+      {{- end }}
+      <br/>
   </section>
+{{ end }}
+  
+  
   
   <h3>Traceroute</h3>
   <form id="traceroute" action="submit_form" method="post">
@@ -37,15 +40,18 @@
   </section>
   
   <h3>Netcat</h3>
-  <form id="netcat" action="submit_form" method="post">
+  <form id="netcat" action="netcat" method="post">
       <input type="text" name="hostname" placeholder="Enter Hostname">
+      <input type="text" name="port" placeholder="Enter Port Number">
       <button name="netcatSubmit" type="submit" >
         Submit
       </button>
   </form>
-  
-  <section id="netcatOutput">
-  
+  {{ with .NetcatResp -}}
+  <section id="ncOutput">
+    <p><strong>Executed netcat to {{.Hostname}}</strong></p>
+    <p>{{.Response}}</p>
   </section>
+{{ end }}
 </body>
 
