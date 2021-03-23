@@ -26,7 +26,6 @@ type NetcatInput struct {
 }
 
 type NetcatOutput struct {
-	FuncID   string
 	Hostname string
 	Response string
 }
@@ -66,9 +65,9 @@ func NetcatAPI(w http.ResponseWriter, r *http.Request, data NetcatInput) {
 }
 
 func NetcatForm(w http.ResponseWriter, r *http.Request, data NetcatInput) {
-	out := NetcatOutput{}
+	out := &NetcatOutput{}
 	out.Hostname = data.Hostname
-	out.FuncID = "netcat"
+
 	address := net.JoinHostPort(data.Hostname, data.Port)
 	timeout := time.Second * 10
 	conn, err := net.DialTimeout("tcp", address, timeout)
@@ -79,7 +78,8 @@ func NetcatForm(w http.ResponseWriter, r *http.Request, data NetcatInput) {
 		defer conn.Close()
 		out.Response = fmt.Sprint("Connected to ", address, " (success!)")
 	}
-	err = netcattpl.ExecuteTemplate(w, "result.html", out)
+	result := Results{NetcatResp: out}
+	err = netcattpl.ExecuteTemplate(w, "result.html", result)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)

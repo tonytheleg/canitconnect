@@ -12,18 +12,20 @@
       </button>
   </form>
 
+  {{- with .CurlResp -}}
   <section id="curlOutput">
-    {{if ne .URL ""}}
-    <p><strong>Executed curl to {{.URL}}</strong></p>
-    <p>{{.Protocol}}</p>
-    <p>{{.Status}}</p>
-    <p>{{.ContentLength}}</p>
-    {{range $key, $val := .Headers}}
-    <p><strong>{{$key}}:</strong> {{$val}}</p>
-    {{end}}
-    {{end}}
-    <br/>
+      <p><strong>Executed curl to {{.URL}}</strong></p>
+      <p>{{.Protocol}}</p>
+      <p>{{.Status}}</p>
+      <p>{{.ContentLength}}</p>
+      {{ range $key, $val := .Headers -}}
+      <p><strong>{{$key}}:</strong> {{$val}}</p>
+      {{- end }}
+      <br/>
   </section>
+{{ end }}
+  
+  
   
   <h3>Traceroute</h3>
   <form id="traceroute" action="submit_form" method="post">
@@ -45,11 +47,11 @@
         Submit
       </button>
   </form>
-  
-  <section id="netcatOutput">
+  {{ with .NetcatResp -}}
+  <section id="ncOutput">
     <p><strong>Executed netcat to {{.Hostname}}</strong></p>
     <p>{{.Response}}</p>
-    <br/>  
   </section>
+{{ end }}
 </body>
 

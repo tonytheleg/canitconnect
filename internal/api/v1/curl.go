@@ -24,7 +24,6 @@ type CurlInput struct {
 
 // CurlOutput stores response data
 type CurlOutput struct {
-	FuncID        string
 	URL           string
 	Protocol      string
 	Status        string
@@ -86,15 +85,15 @@ func CurlForm(w http.ResponseWriter, r *http.Request, url string) {
 		fmt.Fprintln(w, "Something failed", err)
 	}
 	defer resp.Body.Close()
-	data := CurlOutput{
-		FuncID:        "curl",
+	data := &CurlOutput{
 		URL:           url,
 		Protocol:      resp.Proto,
 		Status:        resp.Status,
 		ContentLength: fmt.Sprint(resp.ContentLength),
 		Headers:       resp.Header,
 	}
-	err = curltpl.ExecuteTemplate(w, "result.html", data)
+	result := Results{CurlResp: data}
+	err = curltpl.ExecuteTemplate(w, "result.html", result)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)
