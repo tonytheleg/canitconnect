@@ -25,6 +25,7 @@ type NetcatInput struct {
 	//  HTTPSProxy string `json:"https_proxy"`
 }
 
+// NetcatOutput contains the data for a traceroute response
 type NetcatOutput struct {
 	Hostname string
 	Response string

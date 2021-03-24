@@ -1,70 +1,75 @@
 package v1
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-
-	"github.com/aeden/traceroute"
+	"os/exec"
+	"text/template"
 )
 
-// TracerouteData stores info needed to perform a Traceroute
-type TracerouteData struct {
-	Host string `json:"host"`
+var tracetpl *template.Template
+
+func init() {
+	tracetpl = template.Must(template.ParseGlob("web/templates/*.html"))
+}
+
+// TracerouteInput stores info needed to perform a Traceroute
+type TracerouteInput struct {
+	Hostname string `json:"host"`
 	//  HTTPProxy string `json:"http_proxy"`
 	//  HTTPSProxy string `json:"https_proxy"`
 }
 
-// Traceroute does a traceroute
-func Traceroute(w http.ResponseWriter, r *http.Request) {
-	// Get data from original request to form the traceroute command
-	body, _ := ioutil.ReadAll(r.Body)
-	data := TracerouteData{}
-	err := json.Unmarshal(body, &data)
-	if err != nil {
-		log.Println("Failed to unmarshal json into params")
-	}
-
-	options := traceroute.TracerouteOptions{}
-	options.SetRetries(1)
-	options.SetMaxHops(64)
-	options.SetFirstHop(1)
-
-	var b bytes.Buffer
-	header := fmt.Sprintf("traceroute to %v %v hops max, %v byte packets\n", data.Host, options.MaxHops(), options.PacketSize())
-	b.WriteString(header)
-
-	c := make(chan traceroute.TracerouteHop, 0)
-	go func() {
-		for {
-			hop, ok := <-c
-			if !ok {
-				fmt.Println()
-				return
-			}
-			printHop(&b, hop)
-		}
-	}()
-
-	_, err = traceroute.Traceroute(data.Host, &options, c)
-	if err != nil {
-		fmt.Println("Error: ", err)
-	}
-	fmt.Fprintln(w, b.String())
-
+// TracerouteOutput contains the data for a traceroute response
+type TracerouteOutput struct {
+	Hostname string
+	Response string
 }
 
-func printHop(b *bytes.Buffer, hop traceroute.TracerouteHop) {
-	addr := hop.AddressString()
-	hostOrAddr := hop.HostOrAddressString()
-	if hop.Success {
-		hopString := fmt.Sprintf("%-3d %v (%v)  %v\n", hop.TTL, hostOrAddr, addr, hop.ElapsedTime)
-		b.WriteString(hopString)
+// Traceroute takes the passed hostname and returns a traceroute to it
+func Traceroute(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+
+	data := TracerouteInput{}
+	if r.URL.String() == "/api/v1/traceroute" {
+		body, _ := ioutil.ReadAll(r.Body)
+		err := json.Unmarshal(body, &data)
+		if err != nil {
+			log.Println("Failed to unmarshal json into params")
+		}
+		TracerouteAPI(w, r, data)
 	} else {
-		hopString := fmt.Sprintf("%-3d *\n", hop.TTL)
-		b.WriteString(hopString)
+		data.Hostname = r.FormValue("hostname")
+		TracerouteForm(w, r, data)
+	}
+}
+
+func TracerouteAPI(w http.ResponseWriter, r *http.Request, data TracerouteInput) {
+	result, err := exec.Command("/usr/bin/traceroute", data.Hostname).Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Fprintf(w, "%s\n", string(result[:]))
+}
+
+func TracerouteForm(w http.ResponseWriter, r *http.Request, data TracerouteInput) {
+	out := &TracerouteOutput{}
+	out.Hostname = data.Hostname
+
+	resp, err := exec.Command("/usr/bin/traceroute", data.Hostname).Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	out.Response = string(resp)
+	result := Results{TracerouteResp: out}
+	err = tracetpl.ExecuteTemplate(w, "result.html", result)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		log.Fatalln(err)
 	}
 }

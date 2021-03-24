@@ -24,20 +24,21 @@
       <br/>
   </section>
 {{ end }}
-  
-  
-  
+      
   <h3>Traceroute</h3>
-  <form id="traceroute" action="submit_form" method="post">
-      <input type="text" name="hostname" placeholder="Enter Hostname">
-      <button name="tracerouteSubmit" type="submit" >
-        Submit
-      </button>
-  </form>
+  <form id="traceroute" action="traceroute" method="post">
+    <input type="text" name="hostname" placeholder="Enter Hostname">
+    <button name="tracerouteSubmit" type="submit" >
+      Submit
+    </button>
+</form>
   
+  {{ with .TracerouteResp -}}
   <section id="tracerouteOutput">
-  
+    <p><strong>Executed traceroute to {{.Hostname}}</strong></p>
+    <p>{{.Response}}</p>
   </section>
+  {{ end }}
   
   <h3>Netcat</h3>
   <form id="netcat" action="netcat" method="post">

@@ -15,7 +15,7 @@ func init() {
 	curltpl = template.Must(template.ParseGlob("web/templates/*.html"))
 }
 
-// CurlData stores request data needed to perform a curl
+// CurlInput stores request data needed to perform a curl
 type CurlInput struct {
 	URL string `json:"url"`
 	//	HTTPProxy  string `json:"http_proxy"`
