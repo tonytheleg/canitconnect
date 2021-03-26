@@ -10,23 +10,10 @@ import (
 	"text/template"
 )
 
-var tracetpl *template.Template
+var traceTpl *template.Template
 
 func init() {
-	tracetpl = template.Must(template.ParseGlob("web/templates/*.html"))
-}
-
-// TracerouteInput stores info needed to perform a Traceroute
-type TracerouteInput struct {
-	Hostname string `json:"host"`
-	//  HTTPProxy string `json:"http_proxy"`
-	//  HTTPSProxy string `json:"https_proxy"`
-}
-
-// TracerouteOutput contains the data for a traceroute response
-type TracerouteOutput struct {
-	Hostname string
-	Response string
+	traceTpl = template.Must(template.ParseGlob("web/templates/*.html"))
 }
 
 // Traceroute takes the passed hostname and returns a traceroute to it
@@ -54,7 +41,7 @@ func TracerouteAPI(w http.ResponseWriter, r *http.Request, data TracerouteInput)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Fprintf(w, "%s\n", string(result[:]))
+	fmt.Fprintf(w, "%s\n", result)
 }
 
 func TracerouteForm(w http.ResponseWriter, r *http.Request, data TracerouteInput) {
@@ -65,9 +52,9 @@ func TracerouteForm(w http.ResponseWriter, r *http.Request, data TracerouteInput
 	if err != nil {
 		log.Fatal(err)
 	}
-	out.Response = string(resp)
+	out.Response = fmt.Sprintf("%s\n", resp)
 	result := Results{TracerouteResp: out}
-	err = tracetpl.ExecuteTemplate(w, "result.html", result)
+	err = traceTpl.ExecuteTemplate(w, "result.html", result)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)

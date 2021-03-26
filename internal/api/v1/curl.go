@@ -9,26 +9,10 @@ import (
 	"text/template"
 )
 
-var curltpl *template.Template
+var curlTpl *template.Template
 
 func init() {
-	curltpl = template.Must(template.ParseGlob("web/templates/*.html"))
-}
-
-// CurlInput stores request data needed to perform a curl
-type CurlInput struct {
-	URL string `json:"url"`
-	//	HTTPProxy  string `json:"http_proxy"`
-	//  HTTPSProxy string `json:"https_proxy"`
-}
-
-// CurlOutput stores response data
-type CurlOutput struct {
-	URL           string
-	Protocol      string
-	Status        string
-	ContentLength string
-	Headers       http.Header
+	curlTpl = template.Must(template.ParseGlob("web/templates/*.html"))
 }
 
 // Curl confirms the request source and directs to the correct curl method
@@ -93,7 +77,7 @@ func CurlForm(w http.ResponseWriter, r *http.Request, url string) {
 		Headers:       resp.Header,
 	}
 	result := Results{CurlResp: data}
-	err = curltpl.ExecuteTemplate(w, "result.html", result)
+	err = curlTpl.ExecuteTemplate(w, "result.html", result)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)

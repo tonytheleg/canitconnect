@@ -19,7 +19,8 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", serveIndex)
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
+	http.Handle("/web/static/", http.StripPrefix("/web/static/", http.FileServer(http.Dir("web/static"))))
+	//http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
 
 	// API Routes
 	http.Handle("/api/v1/curl", web.CallCurl())

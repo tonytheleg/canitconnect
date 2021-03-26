@@ -11,24 +11,10 @@ import (
 	"time"
 )
 
-var netcattpl *template.Template
+var ncTpl *template.Template
 
 func init() {
-	netcattpl = template.Must(template.ParseGlob("web/templates/*.html"))
-}
-
-// NetcatInput stores info needed to perform a netcat
-type NetcatInput struct {
-	Hostname string `json:"host"`
-	Port     string `json:"port"`
-	//  HTTPProxy string `json:"http_proxy"`
-	//  HTTPSProxy string `json:"https_proxy"`
-}
-
-// NetcatOutput contains the data for a traceroute response
-type NetcatOutput struct {
-	Hostname string
-	Response string
+	ncTpl = template.Must(template.ParseGlob("web/templates/*.html"))
 }
 
 // Netcat takes the passed URL and Port to test and mimics a netcat call to test if a port is open
@@ -80,7 +66,7 @@ func NetcatForm(w http.ResponseWriter, r *http.Request, data NetcatInput) {
 		out.Response = fmt.Sprint("Connected to ", address, " (success!)")
 	}
 	result := Results{NetcatResp: out}
-	err = netcattpl.ExecuteTemplate(w, "result.html", result)
+	err = ncTpl.ExecuteTemplate(w, "result.html", result)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)

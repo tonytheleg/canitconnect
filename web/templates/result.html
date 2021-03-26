@@ -2,6 +2,7 @@
 <head>
   <title>CanItConnect?</title>
   <meta charset="utf-8"/>
+  <link rel='stylesheet' href='web/static/index.css'>  
 </head>
 <body>
   <h3>Curl</h3>
@@ -36,9 +37,9 @@
   {{ with .TracerouteResp -}}
   <section id="tracerouteOutput">
     <p><strong>Executed traceroute to {{.Hostname}}</strong></p>
-    <p>{{.Response}}</p>
+    <p>{{.Response -}}</p>
   </section>
-  {{ end }}
+  {{- end }}
   
   <h3>Netcat</h3>
   <form id="netcat" action="netcat" method="post">

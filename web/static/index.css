@@ -1,3 +1,9 @@
+body {
+    background-color: #25313e;
+    font-family: 'Hack';
+    color: rgb(6, 151, 18)
+}
+
 .button {
     width: 100%;
     padding: 1em;
@@ -6,10 +12,11 @@
     border: none;
 }
 
-#curlOutput, #tracerouteOutput, #netcatOutput, #pingOutput {
+#curlOutput, #tracerouteOutput, #ncOutput, #pingOutput {
     width: 100%;
     height: 100%;
-    background-color: #dcdcdc;
-    padding: 2.5px 10px;
-    color: black;
+    background-color: #232323;
+    /*padding: 2.5px 10px;*/
+    font-family: 'Hack';
+    color: rgb(6, 151, 18)
 }
