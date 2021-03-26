@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os/exec"
+	"strings"
 	"text/template"
 )
 
@@ -52,7 +53,9 @@ func TracerouteForm(w http.ResponseWriter, r *http.Request, data TracerouteInput
 	if err != nil {
 		log.Fatal(err)
 	}
-	out.Response = fmt.Sprintf("%s\n", resp)
+
+	// Newlines need to be converted to HTML newlines
+	out.Response = strings.Replace(fmt.Sprintf("%s\n", resp), "\n", "<br>", -1)
 	result := Results{TracerouteResp: out}
 	err = traceTpl.ExecuteTemplate(w, "result.html", result)
 	if err != nil {
