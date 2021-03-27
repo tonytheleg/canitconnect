@@ -21,9 +21,8 @@
   {{- with .CurlResp -}}
   <section id="curlOutput">
       <p><strong>Executed curl to {{.URL}}</strong></p>
-      <p>{{.Protocol}}</p>
-      <p>{{.Status}}</p>
-      <p>{{.ContentLength}}</p>
+      <p>{{- .Protocol}} {{.Status}}</p>
+      <p>{{- .ContentLength}}</p>
       {{ range $key, $val := .Headers -}}
       <p><strong>{{$key}}:</strong> {{$val}}</p>
       {{- end }}

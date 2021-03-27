@@ -31,8 +31,8 @@ p {
 .button {
     width: 100%;
     padding: 1em;
-    color: #fff;
-    background: black;
+    color: black;
+    /*background: black;*/
     border: none;
 }
 
@@ -40,7 +40,20 @@ p {
     width: 100%;
     height: 100%;
     background-color: #232323;
-    /*padding: 2.5px 10px;*/
     font-family: 'Hack';
-    color: rgb(6, 151, 18)
+    color: rgb(6, 151, 18);
+ 
+}
+
+#curl, #traceroute, #netcat {
+    width: 100%;
+    height: 100%;
+    background-color: #232323;
+    font-family: 'Hack';
+    color: rgb(6, 151, 18);
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
 }
