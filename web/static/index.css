@@ -24,6 +24,24 @@ body {
     font-size: 25px;
 }
 
+#leftspacer {
+    float: left;
+    height: 100%;
+    width: 25%;
+}
+
+#rightspacer {
+    float: right;
+    height: 100%;
+    width: 25%;
+}
+
+#middle {
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+
 p {
     margin-top: 0;
 }
@@ -42,7 +60,6 @@ p {
     background-color: #232323;
     font-family: 'Hack';
     color: rgb(6, 151, 18);
- 
 }
 
 #curl, #traceroute, #netcat {

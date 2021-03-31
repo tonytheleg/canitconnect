@@ -18,6 +18,9 @@
       </button>
   </form>
 
+  <div id=leftspacer></div>
+  
+  <div id=middle>
   {{- with .CurlResp -}}
   <section id="curlOutput">
       <p><strong>Executed curl to {{.URL}}</strong></p>
@@ -59,5 +62,9 @@
     <p>{{.Response}}</p>
   </section>
 {{ end }}
+</div>
+
+<div id=rightspacer></div>
+
 </body>
 
